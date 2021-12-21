@@ -5,7 +5,7 @@ function collectOddValues(array) {
         result.push(array[0])
     }
 
-
+    
     result = result.concat(collectOddValues(array.slice(1)))
     return result
 
