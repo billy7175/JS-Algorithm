@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <button id="billButton" onclick="getBill('user','sales')">결제</button>
+    <script>
+        // 버튼을 여러번 누르는 것을 방지하기 위한 방법들 
+
+        // 1. Attempt 1: Global Flag Usage
+        let billClicked = false;
+        function getBill(user, sales) {
+            if(!billClicked){
+                billClicked = true;
+                console.log('@user :', user)
+                console.log('@sales :', sales)
+                window.alert('Your bill is on the way.');
+                //do the billing process
+            }
+        }
+
+        // 문제점 
+        /*
+        Several problems this solution addresses are:
+        * You use a global variable. When in the history of coding was this ever a good idea? // 전역 선언 시 overwritten 되면 ?
+        * You can accidentally change the value of the global variable. // 전역 변수를 바꾸면 ?
+        * Always reinitialize the variable to false whenever the user wants to buy other products. // 다른 걸 결제할 수 있으니 항상 = false 로 원복
+        * Testing the code becomes a bit difficult. It has external dependencies. // 테스트가 어려울 수 있다 external dependencies 떄문에
+        * Better move on.
+        */
+
+        // 2.
+    </script>
+</body>
+
+</html>
