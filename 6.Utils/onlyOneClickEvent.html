@@ -9,17 +9,21 @@
 </head>
 
 <body>
-    <button id="billButton" onclick="getBill('user','sales')">결제</button>
+    <button id="billButton" onclick="getBillFirstWay('user','sales')">1번 방법 주문</button>
+    <button id="billButton" onclick="getBillSecondWay('user','sales')">2번 방법 주문</button>
+    <button id="billButton" onclick="getBillThirdWay('user','sales')">3번 방법 주문</button>
+    <button id="billButton" onclick="getBillFourthWay('user','sales')">4번 방법 주문</button>
+    <button id="billButton" onclick="getBillFifthWay('user','sales')">5번 방법 주문</button>
+    <!-- <button id="billButton" onclick="getBillSixWay('user','sales')">6번 방법 주문</button> -->
+    <button id="billButtonSix">Pay Order</button>
     <script>
         // 버튼을 여러번 누르는 것을 방지하기 위한 방법들 
 
         // 1. Attempt 1: Global Flag Usage
         let billClicked = false;
-        function getBill(user, sales) {
-            if(!billClicked){
+        function getBillFirstWay(user, sales) {
+            if (!billClicked) {
                 billClicked = true;
-                console.log('@user :', user)
-                console.log('@sales :', sales)
                 window.alert('Your bill is on the way.');
                 //do the billing process
             }
@@ -32,10 +36,102 @@
         * You can accidentally change the value of the global variable. // 전역 변수를 바꾸면 ?
         * Always reinitialize the variable to false whenever the user wants to buy other products. // 다른 걸 결제할 수 있으니 항상 = false 로 원복
         * Testing the code becomes a bit difficult. It has external dependencies. // 테스트가 어려울 수 있다 external dependencies 떄문에
-        * Better move on.
+        * Better move on. // 다음 해결책 참고.
         */
 
-        // 2.
+        // 2. Attempt 2: Remove the Handler After Usage
+
+
+        function getBillSecondWay(user, sales) {
+            document.getElementById("billButton").onclick = null;
+            window.alert('Your bill is on the way.');
+            //do the billing process
+        }
+        /*
+        *   The code is now tightly coupled to this button with the ID of billButton. You can’t reuse it. // 버튼과 id사이에 결합도 coupled 상승 
+        *   Since you remove the handling function, you have to reattach it somewhere else, so the user can buy again. // 제거하면 어따 다시 어케 사용함
+        *   Testing is now more work than before. You have to provide DOM elements as dependencies. // 테스팅은 가능하다. dependencies로 DOM Element 제공
+        */
+
+
+
+        // @@@ Bad Ateempt @@@
+        // <button id="billButton" onclick="getBill('billButton', user, sales, data)">
+        //     Buy Lemon Pledge
+        // </button>
+        // function getBill(buttonId, user, sales) {
+        //     document.getElementById(buttonId).onclick = null;
+        //     window.alert('Your bill is on the way.');
+        // } // 아이디 전달할 생각 하지 말아주세요..
+
+
+        function alreadyBilled() {
+            window.alert("Your order has been accepted. Your bill is processed.");
+        }
+
+        function getBillThirdWay(user, sales) {
+            document.getElementById('billButton').onclick = alreadyBilled();
+            window.alert('Your bill is on the way.');
+        }// 이렇게 하면 두번 눌릴 일도 없고 유저 유저 입장에서도 더 나은 UI/UX를 제공한다. 
+        // But still again No!
+
+        /*
+          * Coupled code (button). // coupded 결합도 상승
+          * Need to reset handler. // 초기화 필요
+          * Testing becomes harder. // 테스트 복잡도 상승
+        */
+
+        function getBillFourthWay(user, sales) {
+            getBillFourthWay = function () { };
+            window.alert('Your bill is on the way.');
+            //do the billing process
+        }
+        // Still NOOOOOOOOOOOO
+
+        /*
+          * This solution is still hard to test. // 테스트 복잡도 상승
+          * You have to manage the restoration of getBill functionality. How? Idk — nothing practical and meaningful comes to my mind. // getBill 함수 복구를 신경써야한다.
+        */
+
+
+        var getBillFifthWay = (clicked => {
+            return (user, sales) => {
+                if (!clicked) {
+                    clicked = true;
+                    window.alert('Your bill is on the way.');
+                    //do the billing process
+                }
+            }
+        })(false);
+        // Still NO????  It is Yes!
+        /*
+            Using the private variable instead of a global one is a huge enhancement. // 지역 변수로 boolean 할당
+            You have to keep in mind that you need to design every function like this that uses this principle. // 모든 함수를 만들때 이런 방법을 고려해야한다.
+        */
+
+
+        function getBillSixWay(user, sales) {
+            window.alert('Your bill is on the way.');
+            //do the billing process
+        }
+
+        const once = f => {
+            let finished = false;
+            return (...args) => {
+                // console.log('...args')
+                // console.log(...args)
+                if (!finished) {
+                    finished = true;
+                    f(...args);
+                }
+            };
+        };
+
+        document.getElementById("billButtonSix")
+            .addEventListener('click',
+                once(getBillSixWay).bind(this, 'user', 'sales')
+            );
+
     </script>
 </body>
 
