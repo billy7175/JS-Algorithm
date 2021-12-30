@@ -20,3 +20,6 @@ const randomHex02 = () => `#${(0x1000000 + Math.random() * 0xffffff).toString(16
 
 // ✅ res is now a hex value like #c3fd5db
 console.log('6.randomHex02 : ', randomHex02())
+
+const data = Array.apply(null, {length: 100000}).map(Function.call, Math.random) // 10만 개 데이터 생성
+console.log(data)
