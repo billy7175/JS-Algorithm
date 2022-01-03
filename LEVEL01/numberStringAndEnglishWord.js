@@ -16,3 +16,7 @@ function solution(s) {
 
 console.log(solution("2three45sixseven"));
 console.log(['A','B','C','D','E'].join(1))
+// test01 commit 
+
+// test01 commit 
+
