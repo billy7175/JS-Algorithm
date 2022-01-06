@@ -18,7 +18,16 @@ function mappingFunction(object, mapping) {
     const result = {};
     for (const key in mapping) {
         const newKey = mapping[key];
-        if (object.hasOwnProperty(key)) {
+        /// 01.
+        // if (object.hasOwnProperty(key)) {
+        //     result[newKey] = object[key];
+        // } else {
+        //     result[newKey] = null;
+        // }
+
+        /// 02.
+        // console.log('02')
+        if (Object.prototype.hasOwnProperty.call(object, key)) {
             result[newKey] = object[key];
         } else {
             result[newKey] = null;
@@ -27,4 +36,4 @@ function mappingFunction(object, mapping) {
     return result;
 }
 
-console.log(mappingFunction(object, Mapping))
+    console.log(mappingFunction(object, Mapping))
