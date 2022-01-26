@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <script>
+      const dataList = [
+        { id: "경기도", name: "한대앞" },
+        { id: "경기도", name: "안산역" },
+        { id: "경기도", name: "중앙역" },
+        { id: "서울", name: "서초역" },
+        { id: "서울", name: "강남역" },
+        { id: "서울", name: "방배역" },
+        { id: "부산", name: "부산역" },
+        { id: "부산", name: "해운대역" },
+        { id: "부산", name: "친구아이가역" },
+      ];
+      // console.log(dataList);
+
+      const result = dataList.filter((thing, index, self) => {
+        const uniqueId = index === self.findIndex((t) => t.id === thing.id && t.id === thing.id)
+        let foundId = self.findIndex((t) => t.id === thing.id);
+        let id = undefined;
+        thing.regions = []
+        if(foundId === 0) foundId = 'temp'
+        if(foundId){
+          if(foundId === 'temp') foundId = 0
+          id = foundId
+          self[id].regions.push(thing.name)
+        }
+        return uniqueId
+
+      });
+      console.log('@result', result);
+    </script>
+  </body>
+</html>
